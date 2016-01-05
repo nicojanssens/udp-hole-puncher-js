@@ -27,6 +27,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/nicojanssens/udp-hole-puncher.git"
+    "url": "git://github.com/nicojanssens/udp-hole-puncher-js.git"
   }
 }
