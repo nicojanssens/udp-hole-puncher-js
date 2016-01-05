@@ -1,6 +1,4 @@
 // TODO: error when reachable but not connected
-// tests
-// README
 
 'use strict'
 
