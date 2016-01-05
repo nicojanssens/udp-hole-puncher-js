@@ -54,7 +54,7 @@ socket.on('listening', function () {
   var puncher = new UdpHolePuncher(socket)
   puncher.on('connected', function () {
     winston.info('woohoo, we can talk to ' + argv.addr + ':' + argv.port)
-    //sendData()
+    sendData()
   })
   puncher.on('error', function (error) {
     winston.info('woops, something went wrong: ' + error)
