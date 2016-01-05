@@ -1,0 +1,32 @@
+{
+  "name": "udp-hole-puncher",
+  "version": "0.0.1",
+  "description": "UDP hole punching library written in JavaScript",
+  "main": "index.js",
+  "keywords": [
+    "nat",
+    "traversal",
+    "udp",
+    "punching"
+  ],
+  "author": {
+    "name": "Nico Janssens",
+    "email": "nico.b.janssens@gmail.com"
+  },
+  "license": "MIT",
+  "engines" : {
+    "node" : ">=4.x.x"
+  },
+  "dependencies": {
+    "hat": "*",
+    "merge": "*",
+    "winston": "*"
+  },
+  "devDependencies": {
+    "yargs": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nicojanssens/udp-hole-puncher.git"
+  }
+}
