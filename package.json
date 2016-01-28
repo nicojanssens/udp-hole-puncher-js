@@ -1,7 +1,7 @@
 {
   "name": "udp-hole-puncher",
   "version": "0.0.1",
-  "description": "UDP hole punching library written in JavaScript",
+  "description": "UDP hole punching library",
   "main": "index.js",
   "keywords": [
     "nat",
@@ -18,12 +18,12 @@
     "node" : ">=4.x.x"
   },
   "dependencies": {
-    "hat": "*",
-    "merge": "*",
-    "winston": "*"
+    "hat": "0.0.3",
+    "merge": "^1.2.0",
+    "winston": "^2.1.1"
   },
   "devDependencies": {
-    "yargs": "*"
+    "yargs": "^3.32.0"
   },
   "repository": {
     "type": "git",
