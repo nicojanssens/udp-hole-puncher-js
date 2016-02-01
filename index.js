@@ -58,7 +58,7 @@ UdpHolePuncher.prototype.connect = function (addr, port) {
   this._sendRequestInterval = setInterval(function () {
     if (self._attempts > 0) {
       self._attempts--
-      self.sendRequest(addr, port)
+      self._sendRequest(addr, port)
     } else {
       winston.error('[udp-hole-puncher] failed to connect with ' + addr + ':' + port)
       clearInterval(self._sendRequestInterval)
@@ -77,49 +77,49 @@ UdpHolePuncher.prototype.close = function () {
 
 /** Outgoing messages */
 
-UdpHolePuncher.prototype.sendRequest = function (addr, port) {
+UdpHolePuncher.prototype._sendRequest = function (addr, port) {
   winston.debug('[udp-hole-puncher] sending request id ' + this._id + ' to ' + addr + ':' + port)
-  var message = this.composeRequest(this._id)
+  var message = this._composeRequest(this._id)
   this._socket.send(message, 0, message.length, port, addr)
 }
 
-UdpHolePuncher.prototype.sendAck = function (addr, port) {
+UdpHolePuncher.prototype._sendAck = function (addr, port) {
   winston.debug('[udp-hole-puncher] sending ack id ' + this._remoteId + ' to ' + addr + ':' + port)
-  var message = this.composeAck(this._remoteId)
+  var message = this._composeAck(this._remoteId)
   this._socket.send(message, 0, message.length, port, addr)
 }
 
 /** Incoming message */
 
-UdpHolePuncher.prototype.onMessage = function () {
+UdpHolePuncher.prototype._onMessage = function () {
   var self = this
   return function (bytes, rinfo) {
     winston.debug('[udp-hole-puncher] receiving message from ' + JSON.stringify(rinfo))
     var type = bytes.readUInt16BE(0)
     switch (type) {
       case UdpHolePuncher.PACKET.REQUEST:
-        self.onRequest(bytes.slice(2), rinfo)
+        self._onRequest(bytes.slice(2), rinfo)
         break
       case UdpHolePuncher.PACKET.ACK:
-        self.onAck(bytes.slice(2), rinfo)
+        self._onAck(bytes.slice(2), rinfo)
         break
       default:
-        self.onRegularMessage(bytes, rinfo)
+        self._onRegularMessage(bytes, rinfo)
     }
   }
 }
 
-UdpHolePuncher.prototype.onRequest = function (bytes, rinfo) {
+UdpHolePuncher.prototype._onRequest = function (bytes, rinfo) {
   var id = bytes.toString()
   winston.debug('[udp-hole-puncher] receiving remote token ' + id + ' from ' + rinfo.address + ':' + rinfo.port)
   this._remoteId = id
   this._receivingMessages = true
-  this.sendAck(rinfo.address, rinfo.port)
+  this._sendAck(rinfo.address, rinfo.port)
   this.emit('reachable')
   this._verifyConnection()
 }
 
-UdpHolePuncher.prototype.onAck = function (bytes, rinfo) {
+UdpHolePuncher.prototype._onAck = function (bytes, rinfo) {
   var ackId = bytes.toString()
   winston.debug('[udp-hole-puncher] receiving ack with token ' + ackId + ' from ' + rinfo.address + ':' + rinfo.port)
   if (ackId !== this._id) {
@@ -131,7 +131,7 @@ UdpHolePuncher.prototype.onAck = function (bytes, rinfo) {
   this._verifyConnection()
 }
 
-UdpHolePuncher.prototype.onRegularMessage = function (bytes, rinfo) {
+UdpHolePuncher.prototype._onRegularMessage = function (bytes, rinfo) {
   winston.warn('[udp-hole-puncher] receiving regular message while establishing a connection')
   // forward to original message listeners
   this._messageListeners.forEach(function (callback) {
@@ -149,7 +149,7 @@ UdpHolePuncher.prototype._verifyConnection = function () {
 
 /** Message composition */
 
-UdpHolePuncher.prototype.composeRequest = function (id) {
+UdpHolePuncher.prototype._composeRequest = function (id) {
   // type
   var typeBytes = new Buffer(2)
   typeBytes.writeUInt16BE(UdpHolePuncher.PACKET.REQUEST)
@@ -161,7 +161,7 @@ UdpHolePuncher.prototype.composeRequest = function (id) {
   return result
 }
 
-UdpHolePuncher.prototype.composeAck = function (id) {
+UdpHolePuncher.prototype._composeAck = function (id) {
   // type
   var typeBytes = new Buffer(2)
   typeBytes.writeUInt16BE(UdpHolePuncher.PACKET.ACK)
@@ -176,7 +176,7 @@ UdpHolePuncher.prototype.composeAck = function (id) {
 /** Socket errors */
 
 // Error handler
-UdpHolePuncher.prototype.onFailure = function () {
+UdpHolePuncher.prototype._onFailure = function () {
   return function (error) {
     var errorMsg = '[udp-hole-puncher] socket error: ' + error
     winston.error(errorMsg)
@@ -200,8 +200,8 @@ UdpHolePuncher.prototype._initSocket = function () {
     self._socket.removeListener('error', callback)
   })
   // ... and put my handlers in place
-  this._socket.on('message', this.onMessage())
-  this._socket.on('error', this.onFailure())
+  this._socket.on('message', this._onMessage())
+  this._socket.on('error', this._onFailure())
 }
 
 UdpHolePuncher.prototype._restoreSocket = function () {
