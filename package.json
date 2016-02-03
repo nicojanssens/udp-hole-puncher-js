@@ -1,6 +1,6 @@
 {
   "name": "udp-hole-puncher",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "UDP hole punching library",
   "main": "index.js",
   "keywords": [
@@ -14,8 +14,8 @@
     "email": "nico.b.janssens@gmail.com"
   },
   "license": "MIT",
-  "engines" : {
-    "node" : ">=4.x.x"
+  "engines": {
+    "node": ">=4.x.x"
   },
   "dependencies": {
     "hat": "0.0.3",
