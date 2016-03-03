@@ -7,7 +7,10 @@ var events = require('events')
 var hat = require('hat')
 var merge = require('merge')
 var util = require('util')
-var winston = require('winston')
+
+var debug = require('debug')
+var debugLog = debug('udp-hole-puncher')
+var errorLog = debug('udp-hole-puncher:error')
 
 /**
  * UDP hole puncher
@@ -20,8 +23,8 @@ var winston = require('winston')
  */
 var UdpHolePuncher = function (socket, args) {
   if (socket === undefined) {
-    var error = '[udp-hole-puncher] udp socket is undefined'
-    winston.error(error)
+    var error = 'udp socket is undefined'
+    errorLog(error)
     throw new Error(error)
   }
   var margs = merge(Object.create(UdpHolePuncher.DEFAULTS), args)
@@ -35,7 +38,7 @@ var UdpHolePuncher = function (socket, args) {
   this._socket = socket
   this._initSocket()
   // done
-  winston.debug('[udp-hole-puncher] init complete: id = ' + this._id)
+  debugLog('init complete: id = ' + this._id)
 }
 
 // Inherit EventEmitter
@@ -60,7 +63,7 @@ UdpHolePuncher.prototype.connect = function (addr, port) {
       self._attempts--
       self._sendRequest(addr, port)
     } else {
-      winston.error('[udp-hole-puncher] failed to connect with ' + addr + ':' + port)
+      errorLog('failed to connect with ' + addr + ':' + port)
       clearInterval(self._sendRequestInterval)
       self._restoreSocket()
       self.emit('timeout')
@@ -78,13 +81,13 @@ UdpHolePuncher.prototype.close = function () {
 /** Outgoing messages */
 
 UdpHolePuncher.prototype._sendRequest = function (addr, port) {
-  winston.debug('[udp-hole-puncher] sending request id ' + this._id + ' to ' + addr + ':' + port)
+  debugLog('sending request id ' + this._id + ' to ' + addr + ':' + port)
   var message = this._composeRequest(this._id)
   this._socket.send(message, 0, message.length, port, addr)
 }
 
 UdpHolePuncher.prototype._sendAck = function (addr, port) {
-  winston.debug('[udp-hole-puncher] sending ack id ' + this._remoteId + ' to ' + addr + ':' + port)
+  debugLog('sending ack id ' + this._remoteId + ' to ' + addr + ':' + port)
   var message = this._composeAck(this._remoteId)
   this._socket.send(message, 0, message.length, port, addr)
 }
@@ -94,7 +97,7 @@ UdpHolePuncher.prototype._sendAck = function (addr, port) {
 UdpHolePuncher.prototype._onMessage = function () {
   var self = this
   return function (bytes, rinfo) {
-    winston.debug('[udp-hole-puncher] receiving message from ' + JSON.stringify(rinfo))
+    debugLog('receiving message from ' + JSON.stringify(rinfo))
     var type = bytes.readUInt16BE(0)
     switch (type) {
       case UdpHolePuncher.PACKET.REQUEST:
@@ -111,7 +114,7 @@ UdpHolePuncher.prototype._onMessage = function () {
 
 UdpHolePuncher.prototype._onRequest = function (bytes, rinfo) {
   var id = bytes.toString()
-  winston.debug('[udp-hole-puncher] receiving remote token ' + id + ' from ' + rinfo.address + ':' + rinfo.port)
+  debugLog('receiving remote token ' + id + ' from ' + rinfo.address + ':' + rinfo.port)
   this._remoteId = id
   this._receivingMessages = true
   this._sendAck(rinfo.address, rinfo.port)
@@ -121,9 +124,9 @@ UdpHolePuncher.prototype._onRequest = function (bytes, rinfo) {
 
 UdpHolePuncher.prototype._onAck = function (bytes, rinfo) {
   var ackId = bytes.toString()
-  winston.debug('[udp-hole-puncher] receiving ack with token ' + ackId + ' from ' + rinfo.address + ':' + rinfo.port)
+  debugLog('receiving ack with token ' + ackId + ' from ' + rinfo.address + ':' + rinfo.port)
   if (ackId !== this._id) {
-    winston.debug('[udp-hole-puncher] ack contains incorrect id, dropping on the floor')
+    debugLog('ack contains incorrect id, dropping on the floor')
     return
   }
   this._messageDeliveryConfirmed = true
@@ -132,7 +135,7 @@ UdpHolePuncher.prototype._onAck = function (bytes, rinfo) {
 }
 
 UdpHolePuncher.prototype._onRegularMessage = function (bytes, rinfo) {
-  winston.warn('[udp-hole-puncher] receiving regular message while establishing a connection')
+  debugLog('receiving regular message while establishing a connection')
   // forward to original message listeners
   this._messageListeners.forEach(function (callback) {
     callback(bytes, rinfo)
@@ -141,7 +144,7 @@ UdpHolePuncher.prototype._onRegularMessage = function (bytes, rinfo) {
 
 UdpHolePuncher.prototype._verifyConnection = function () {
   if (this._receivingMessages && this._messageDeliveryConfirmed) {
-    winston.info('[udp-hole-puncher] bi-directional connection established')
+    debugLog('bi-directional connection established')
     this._restoreSocket()
     this.emit('connected')
   }
@@ -178,8 +181,8 @@ UdpHolePuncher.prototype._composeAck = function (id) {
 // Error handler
 UdpHolePuncher.prototype._onFailure = function () {
   return function (error) {
-    var errorMsg = '[udp-hole-puncher] socket error: ' + error
-    winston.error(errorMsg)
+    var errorMsg = 'socket error: ' + error
+    errorLog(errorMsg)
     this.emit('error', error)
     throw new Error(errorMsg)
   }
