@@ -28,5 +28,8 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/nicojanssens/udp-hole-puncher-js.git"
+  },
+  "scripts": {
+    "peer": "node examples/peer.js $"
   }
 }

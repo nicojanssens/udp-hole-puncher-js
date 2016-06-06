@@ -91,3 +91,9 @@ Fired when a fatal error occurs.
 ## Examples
 
 See examples directory. Note that both peers should _not_ be located behind the same NAT device. To test this lib, deploy one peer on your home network and another one outside of that network -- for instance on a public cloud infrastructure.
+
+To run this test example, execute the following cmd on two machines A and B:
+```
+server-A$ npm run-script peer -- --bind=12345 --addr=<PUBLIC ADDR OF B> --port=23456
+server-B$ npm run-script peer -- --bind=23456 --addr=<PUBLIC ADDR OF A> --port=12345
+```
