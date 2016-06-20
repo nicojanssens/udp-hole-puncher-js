@@ -23,13 +23,15 @@
     "merge": "^1.2.0"
   },
   "devDependencies": {
+    "publish": "^0.6.0",
     "yargs": "^3.32.0"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/nicojanssens/udp-hole-puncher-js.git"
+    "url": "git://github.com/microminion/udp-hole-puncher-js.git"
   },
   "scripts": {
+    "2npm": "publish",
     "peer": "node examples/peer.js $"
   }
 }
