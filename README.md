@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/MicroMinion/udp-hole-puncher-js.svg?style=svg)](https://circleci.com/gh/MicroMinion/udp-hole-puncher-js)
+
 # UDP Hole Puncher
 
 #### JS library implementing a UDP hole punching protocol to connect two peers located behind NAT devices. Will not work when one or both peers are located behind a symmetric NAT box. In that case, you may need a relay server + a TURN lib (like [this one](https://github.com/nicojanssens/turn-js)) to facilitate communication between both peers.
