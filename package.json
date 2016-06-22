@@ -23,6 +23,8 @@
     "merge": "^1.2.0"
   },
   "devDependencies": {
+    "chai": "^3.5.0",    
+    "mocha": "^2.4.5",
     "publish": "^0.6.0",
     "yargs": "^3.32.0"
   },
@@ -32,6 +34,7 @@
   },
   "scripts": {
     "2npm": "publish",
-    "peer": "node examples/peer.js $"
+    "peer": "node examples/peer.js $",
+    "test": "./node_modules/.bin/mocha test/*.unit.js"
   }
 }
