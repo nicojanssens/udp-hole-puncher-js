@@ -18,12 +18,13 @@
     "node": ">=4.x.x"
   },
   "dependencies": {
-    "debug": "^2.2.0",
     "hat": "0.0.3",
-    "merge": "^1.2.0"
+    "merge": "^1.2.0",
+    "winston": "^2.2.0",
+    "winston-meta-wrapper": "^1.0.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",    
+    "chai": "^3.5.0",
     "mocha": "^2.4.5",
     "publish": "^0.6.0",
     "yargs": "^3.32.0"

@@ -7,10 +7,8 @@ var events = require('events')
 var hat = require('hat')
 var merge = require('merge')
 var util = require('util')
-
-var debug = require('debug')
-var debugLog = debug('udp-hole-puncher')
-var errorLog = debug('udp-hole-puncher:error')
+var winston = require('winston')
+var winstonWrapper = require('winston-meta-wrapper')
 
 /**
  * UDP hole puncher
@@ -22,23 +20,31 @@ var errorLog = debug('udp-hole-puncher:error')
  * @fires UdpHolePuncher#error
  */
 var UdpHolePuncher = function (socket, args) {
+  // logging
+  this._log = winstonWrapper(winston)
+  this._log.addMeta({
+    module: 'udp-hole-puncher'
+  })
+  // check if socket is defined
   if (socket === undefined) {
-    var error = 'udp socket is undefined'
-    errorLog(error)
-    throw new Error(error)
+    var errorMsg = 'udp socket is undefined'
+    this._log.error(errorMsg)
+    throw new Error(errorMsg)
   }
+  // merge args with defaults
   var margs = merge(Object.create(UdpHolePuncher.DEFAULTS), args)
   // init
   this._id = hat()
   this._attempts = margs.maxRequestAttempts
   this._timeout = margs.requestTimeout
   events.EventEmitter.call(this)
-  // create new socket if undefined
-  // var socket = (udpSocket === undefined) ? dgram.createSocket('udp4') : udpSocket
   this._socket = socket
   this._initSocket()
   // done
-  debugLog('init complete: id = ' + this._id)
+  this._log.addMeta({
+    id: this._id
+  })
+  this._log.debug('init complete')
 }
 
 // Inherit EventEmitter
@@ -63,7 +69,7 @@ UdpHolePuncher.prototype.connect = function (addr, port) {
       self._attempts--
       self._sendRequest(addr, port)
     } else {
-      errorLog('failed to connect with ' + addr + ':' + port)
+      self._log.error('failed to connect with ' + addr + ':' + port)
       clearInterval(self._sendRequestInterval)
       self._restoreSocket()
       self.emit('timeout')
@@ -81,15 +87,15 @@ UdpHolePuncher.prototype.close = function () {
 /** Outgoing messages */
 
 UdpHolePuncher.prototype._sendRequest = function (addr, port) {
-  debugLog('sending request id ' + this._id + ' to ' + addr + ':' + port)
   var message = this._composeRequest(this._id)
   this._socket.send(message, 0, message.length, port, addr)
+  this._log.debug('sent request ' + this._id + '  to ' + addr + ':' + port)
 }
 
 UdpHolePuncher.prototype._sendAck = function (addr, port) {
-  debugLog('sending ack id ' + this._remoteId + ' to ' + addr + ':' + port)
   var message = this._composeAck(this._remoteId)
   this._socket.send(message, 0, message.length, port, addr)
+  this._log.debug('sent ack ' + this._remoteId + ' to ' + addr + ':' + port)
 }
 
 /** Incoming message */
@@ -97,7 +103,7 @@ UdpHolePuncher.prototype._sendAck = function (addr, port) {
 UdpHolePuncher.prototype._onMessage = function () {
   var self = this
   return function (bytes, rinfo) {
-    debugLog('receiving message from ' + JSON.stringify(rinfo))
+    self._log.debug('receiving message from ' + JSON.stringify(rinfo))
     var type = bytes.readUInt16BE(0)
     switch (type) {
       case UdpHolePuncher.PACKET.REQUEST:
@@ -114,7 +120,7 @@ UdpHolePuncher.prototype._onMessage = function () {
 
 UdpHolePuncher.prototype._onRequest = function (bytes, rinfo) {
   var id = bytes.toString()
-  debugLog('receiving remote token ' + id + ' from ' + rinfo.address + ':' + rinfo.port)
+  this._log.debug('receiving remote token ' + id + ' from ' + rinfo.address + ':' + rinfo.port)
   this._remoteId = id
   this._receivingMessages = true
   this._sendAck(rinfo.address, rinfo.port)
@@ -124,9 +130,9 @@ UdpHolePuncher.prototype._onRequest = function (bytes, rinfo) {
 
 UdpHolePuncher.prototype._onAck = function (bytes, rinfo) {
   var ackId = bytes.toString()
-  debugLog('receiving ack with token ' + ackId + ' from ' + rinfo.address + ':' + rinfo.port)
+  this._log.debug('receiving ack with token ' + ackId + ' from ' + rinfo.address + ':' + rinfo.port)
   if (ackId !== this._id) {
-    debugLog('ack contains incorrect id, dropping on the floor')
+    this._log.debug('ack contains incorrect id, dropping on the floor')
     return
   }
   this._messageDeliveryConfirmed = true
@@ -135,7 +141,7 @@ UdpHolePuncher.prototype._onAck = function (bytes, rinfo) {
 }
 
 UdpHolePuncher.prototype._onRegularMessage = function (bytes, rinfo) {
-  debugLog('receiving regular message while establishing a connection')
+  this._log.debug('receiving regular message while establishing a connection')
   // forward to original message listeners
   this._messageListeners.forEach(function (callback) {
     callback(bytes, rinfo)
@@ -144,7 +150,7 @@ UdpHolePuncher.prototype._onRegularMessage = function (bytes, rinfo) {
 
 UdpHolePuncher.prototype._verifyConnection = function () {
   if (this._receivingMessages && this._messageDeliveryConfirmed) {
-    debugLog('bi-directional connection established')
+    this._log.debug('bi-directional connection established')
     this._restoreSocket()
     this.emit('connected')
   }
@@ -180,10 +186,11 @@ UdpHolePuncher.prototype._composeAck = function (id) {
 
 // Error handler
 UdpHolePuncher.prototype._onFailure = function () {
+  var self = this
   return function (error) {
     var errorMsg = 'socket error: ' + error
-    errorLog(errorMsg)
-    this.emit('error', error)
+    self._log.error(errorMsg)
+    self.emit('error', error)
     throw new Error(errorMsg)
   }
 }

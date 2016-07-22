@@ -2,6 +2,8 @@
 
 var dgram = require('dgram')
 var UdpHolePuncher = require('../index')
+var winston = require('winston')
+winston.level = 'debug'
 
 var chai = require('chai')
 var expect = chai.expect
