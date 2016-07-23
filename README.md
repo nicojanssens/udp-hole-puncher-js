@@ -2,20 +2,19 @@
 
 # UDP Hole Puncher
 
-#### JS library implementing a UDP hole punching protocol to connect two peers located behind NAT devices. Will not work when one or both peers are located behind a symmetric NAT box. In that case, you may need a relay server + a TURN lib (like [this one](https://github.com/nicojanssens/turn-js)) to facilitate communication between both peers.
+## Summary
+JS library implementing a UDP hole punching protocol to connect two peers located behind NAT devices. Will not work when one or both peers are located behind a symmetric NAT box. In that case, you may need a relay server + a TURN lib (like [this one](https://github.com/nicojanssens/turn-js)) to facilitate communication between both peers.
 
 ## Features
 - no rendez-vous server lock in
 - verifies if bidirectional communication is possible
 
 ## Install
-
 ```
 npm install udp-hole-puncher
 ```
 
 ## Usage
-
 ```js
 var dgram = require('dgram')
 var UdpHolePuncher = require('udp-hole-puncher')
@@ -65,33 +64,26 @@ Create a new udp-hole-puncher.
 }`
 
 ### `puncher.connect(addr, port)`
-
 Try to establish a connection with a peer using its public address and port. Note that to setup bidirectional communication, both peers must simultaneously execute a connect operation (initiating the punching protocol).
 
 ### `puncher.close()`
-
 End execution of the hole punching protocol.
 
 ## Events
 
 ### `puncher.on('connected', function() {})`
-
 Fired when the hole punching protocol completes and both peers can reach each other.  
 
 ### `puncher.on('reachable', function() {})`
-
 Called when the other peer was able to reach this peer. No guarantee yet that bidirectional communication can be established.
 
 ### `puncher.on('timeout', function() {})`
-
 Fired when the hole punching protocol timeouts.  
 
 ### `puncher.on('error', function(error) {})`
-
 Fired when a fatal error occurs.    
 
 ## Examples
-
 See examples directory. Note that both peers should _not_ be located behind the same NAT device. To test this lib, deploy one peer on your home network and another one outside of that network -- for instance on a public cloud infrastructure.
 
 To run this test example, execute the following cmd on two machines A and B:
