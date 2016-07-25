@@ -53,7 +53,7 @@ socket.bind(myPort)
 
 ## API
 
-### `puncher = new UdpHolePuncher(socket, args)`
+### `var puncher = new UdpHolePuncher(socket, args)`
 Create a new udp-hole-puncher.
 
 `socket` must be an operational datagram socket.
