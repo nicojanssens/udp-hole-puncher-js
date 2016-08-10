@@ -36,6 +36,7 @@
     "mocha": "^2.4.5",
     "once": "1.x",
     "publish": "^0.6.0",
+    "uglify-js": "^2.7.0",
     "yargs": "^3.32.0"
   },
   "repository": {
@@ -43,8 +44,12 @@
     "url": "git://github.com/microminion/udp-hole-puncher-js.git"
   },
   "scripts": {
+    "build": "browserify -s UdpHolePuncher -e ./ | uglifyjs -c warnings=false -m > udp_hole-puncher.min.js",
+    "build-debug": "browserify -s UdpHolePuncher -e ./ > udp_hole-puncher.debug.js",
+    "size": "npm run build && cat udp_hole-puncher.min.js | gzip | wc -c",
+    "test-node": "./node_modules/.bin/mocha test/node.unit.js",
+    "clean": "rm -f udp_hole-puncher.*.js && rm -rf node_modules",
     "2npm": "publish",
-    "peer": "node examples/peer.js $",
-    "test": "./node_modules/.bin/mocha test/*.unit.js"
+    "peer": "node examples/peer.js $"
   }
 }
