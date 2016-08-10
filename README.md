@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/MicroMinion/udp-hole-puncher-js.svg?style=svg)](https://circleci.com/gh/MicroMinion/udp-hole-puncher-js)
+[![CircleCI](https://circleci.com/gh/MicroMinion/udp-hole-puncher-js.svg?style=shield)](https://circleci.com/gh/MicroMinion/udp-hole-puncher-js)
 
 # UDP Hole Puncher
 
@@ -8,6 +8,7 @@ JS library implementing a UDP hole punching protocol to connect two peers locate
 ## Features
 - no rendez-vous server lock in
 - verifies if bidirectional communication is possible
+- can be browserified
 
 ## Install
 ```

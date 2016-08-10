@@ -17,15 +17,24 @@
   "engines": {
     "node": ">=4.x.x"
   },
+  "browser": {
+    "dgram": "chrome-dgram",
+    "winston": "./lib/logger"
+  },
   "dependencies": {
+    "chrome-dgram": "^3.0.0",
+    "debug": "^2.2.0",
     "hat": "0.0.3",
     "merge": "^1.2.0",
     "winston": "^2.2.0",
     "winston-meta-wrapper": "^1.0.0"
   },
   "devDependencies": {
+    "browserify": "^13.1.0",
     "chai": "^3.5.0",
+    "envify": "^3.4.1",
     "mocha": "^2.4.5",
+    "once": "1.x",
     "publish": "^0.6.0",
     "yargs": "^3.32.0"
   },

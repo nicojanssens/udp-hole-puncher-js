@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+
+  "name": "Udp Hole Puncher Test",
+  "description": "Udp Hole Puncher Tesy",
+  "version": "0.1.0",
+
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+
+  "permissions": [
+    "*://*/*"
+  ],
+
+  "sockets": {
+    "udp": {
+      "bind": "*",
+      "send": "*"
+    }
+  }
+
+}
