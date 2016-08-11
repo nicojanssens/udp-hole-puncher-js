@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/MicroMinion/udp-hole-puncher-js.svg?style=shield)](https://circleci.com/gh/MicroMinion/udp-hole-puncher-js)
+[![npm](https://img.shields.io/npm/v/udp-hole-puncher.svg)](https://npmjs.org/package/udp-hole-puncher)
 
 # UDP Hole Puncher
 
