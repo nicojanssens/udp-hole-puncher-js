@@ -1,3 +1,4 @@
 node_modules
 depricated
 test/all*.sh
+test/chrome-app/bundle.js
