@@ -12,7 +12,7 @@ describe('udp hole puncher', function () {
       var env = {
         port: listeningPort
       }
-      helper.browserify('chrome-app/socket-test.js', env, function (error) {
+      helper.browserify('chrome-app/client.js', env, function (error) {
         if (error) {
           done(error)
         }

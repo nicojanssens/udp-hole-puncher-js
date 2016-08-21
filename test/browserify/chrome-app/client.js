@@ -3,7 +3,7 @@
 var chai = require('chai')
 var dgram = require('dgram') // browserify will replace this with chrome-dgram
 var expect = chai.expect
-var UdpHolePuncher = require('../../index')
+var UdpHolePuncher = require('../../../index')
 
 var socket = dgram.createSocket('udp4')
 var port = process.env.port
