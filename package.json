@@ -1,6 +1,6 @@
 {
   "name": "udp-hole-puncher",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "UDP hole punching library",
   "main": "index.js",
   "keywords": [
