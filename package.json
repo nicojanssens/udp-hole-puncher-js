@@ -32,14 +32,11 @@
   "devDependencies": {
     "browserify": "^13.1.0",
     "chai": "^3.5.0",
-    "envify": "^3.4.1",
     "gulp": "^3.9.1",
     "gulp-if": "^2.0.1",
-    "gulp-rename": "^1.2.2 ",
     "gulp-size": "^2.1.0",
     "gulp-uglify": "^2.0.0",
     "mocha": "^2.4.5",
-    "once": "1.x",
     "publish": "^0.6.0",
     "uglify-js": "^2.7.0",
     "vinyl-buffer": "^1.0.0",
@@ -53,6 +50,8 @@
   "scripts": {
     "build-chromium": "gulp chromiumify",
     "build-chromium-prod": "gulp chromiumify --production",
+    "build-cordova": "gulp cordovaify",
+    "build-cordova-prod": "gulp cordovaify --production",
     "test-node": "./node_modules/.bin/mocha test/node.unit.js",
     "clean": "rm -f build/chromium/udp-hole-puncher.*.js && rm -rf node_modules",
     "2npm": "publish",

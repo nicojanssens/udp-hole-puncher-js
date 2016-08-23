@@ -1,5 +1,5 @@
 node_modules
 depricated
 test/all*.sh
-test/chrome-app/bundle.js
+test/browserify/chrome-app/bundle.js
 build

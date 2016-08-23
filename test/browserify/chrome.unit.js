@@ -1,25 +1,15 @@
 'use strict'
 
+var chrome = require('./chrome')
 var dgram = require('dgram')
-var helper = require('./helper')
+var gulp = require('gulp')
+var gulpfile = require('../../gulpfile')
+var listeningPort = 12345
 
 describe('udp hole puncher', function () {
   this.timeout(10000)
   it('should properly return/release an existing UDP socket using chrome-dgrams ', function (done) {
     var child
-    // start chrome app
-    var launchChrome = function (listeningPort) {
-      var env = {
-        port: listeningPort
-      }
-      helper.browserify('chrome-app/client.js', env, function (error) {
-        if (error) {
-          done(error)
-        }
-        console.log('clean browserify build')
-        child = helper.launchBrowser()
-      })
-    }
     // create udp server listening to messages from chrome app
     var server = dgram.createSocket('udp4')
     server.on('error',  function (error) {
@@ -41,10 +31,24 @@ describe('udp hole puncher', function () {
     })
     server.on('listening', function () {
       var address = server.address()
-      console.log('server listening ' + address.address + ':' + address.port)
-      launchChrome(address.port)
+      console.log('server listening at ' + address.address + ':' + address.port)
+      // start gulp task
+      gulp.start('test')
     })
     // start udp server
-    server.bind()
+    server.bind(listeningPort)
+    // build bundle.js
+    gulp.task('test', function () {
+      var destFile = 'bundle.js'
+      var destFolder = './chrome-app'
+      var entry = './chrome-app/client.js'
+      return gulpfile
+        .bundle(entry, gulpfile.modules.chromiumify, destFile, destFolder, true)
+        .on('end', onBundleReady)
+    })
+    var onBundleReady = function () {
+      console.log('clean browserify build, launching chrome app')
+      child = chrome.launchApp()
+    }
   })
 })

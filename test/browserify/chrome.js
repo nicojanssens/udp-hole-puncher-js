@@ -1,10 +1,6 @@
 'use strict'
 
-var browserify = require('browserify')
 var cp = require('child_process')
-var envify = require('envify/custom')
-var fs = require('fs')
-var once = require('once')
 var path = require('path')
 var os = require('os')
 
@@ -30,24 +26,24 @@ switch (os.platform()) {
     break
 }
 
-var BUNDLE_PATH = path.join(__dirname, 'chrome-app/bundle.js')
+// var BUNDLE_PATH = path.join(__dirname, 'chrome-app/bundle.js')
 
-exports.browserify = function (filename, env, cb) {
-  if (!env) env = {}
-  if (!cb) cb = function () {}
-  cb = once(cb)
+// exports.browserify = function (filename, env, cb) {
+//   if (!env) env = {}
+//   if (!cb) cb = function () {}
+//   cb = once(cb)
+//
+//   var b = browserify()
+//   b.add(path.join(__dirname, filename))
+//   b.transform(envify(env))
+//
+//   b.bundle()
+//     .pipe(fs.createWriteStream(BUNDLE_PATH))
+//     .on('close', cb)
+//     .on('error', cb)
+// }
 
-  var b = browserify()
-  b.add(path.join(__dirname, filename))
-  b.transform(envify(env))
-
-  b.bundle()
-    .pipe(fs.createWriteStream(BUNDLE_PATH))
-    .on('close', cb)
-    .on('error', cb)
-}
-
-exports.launchBrowser = function () {
+exports.launchApp = function () {
   // supply full path because windows
   var app = path.join(__dirname, '/chrome-app')
 

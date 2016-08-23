@@ -6,7 +6,7 @@ var expect = chai.expect
 var UdpHolePuncher = require('../../../index')
 
 var socket = dgram.createSocket('udp4')
-var port = process.env.port
+var port = 12345
 
 function done(error) {
   var message = (error === undefined)? 'done': error
@@ -37,6 +37,7 @@ socket.on('listening', function () {
   expect(socket.listeners('error').length).to.equal(1)
   expect(socket.listeners('message')[0]).to.not.equal(onMessage)
   expect(socket.listeners('error')[0]).to.not.equal(onError)
+  console.log('all good!')
   // setInterval(function () {
     puncher.close()
     // // check the socket's event listeners (should not include any puncher handlers)
