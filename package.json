@@ -53,7 +53,7 @@
     "build-cordova": "gulp cordovaify",
     "build-cordova-prod": "gulp cordovaify --production",
     "test-node": "./node_modules/.bin/mocha test/node.unit.js",
-    "clean": "rm -f build/chromium/udp-hole-puncher.*.js && rm -rf node_modules",
+    "clean": "rm -f build && rm -rf node_modules && rm test/browserify/chrome-app/bundle.js",
     "2npm": "publish",
     "peer": "node examples/peer.js $"
   }
