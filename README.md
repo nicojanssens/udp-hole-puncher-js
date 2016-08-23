@@ -16,20 +16,6 @@ JS library implementing a UDP hole punching protocol to connect two peers locate
 npm install udp-hole-puncher
 ```
 
-## Build
-
-### Chrome app
-```
-gulp chromiumify [--production]
-```
-Generates `udp-hole-puncher.debug.js` and `udp-hole-puncher.min.js` in `build/chromium` folder.
-
-### Cordova app
-```
-gulp cordovaify [--production]
-```
-Generates `udp-hole-puncher.debug.js` and `udp-hole-puncher.min.js` in `build/cordova` folder.
-
 ## Usage
 ```js
 var dgram = require('dgram')
@@ -98,6 +84,20 @@ Fired when the hole punching protocol timeouts.
 
 ### `puncher.on('error', function(error) {})`
 Fired when a fatal error occurs.    
+
+## Build
+
+### Chrome app
+```
+gulp chromiumify [--production]
+```
+Generates `udp-hole-puncher.debug.js` and `udp-hole-puncher.min.js` in `build/chromium` folder.
+
+### Cordova app
+```
+gulp cordovaify [--production]
+```
+Generates `udp-hole-puncher.debug.js` and `udp-hole-puncher.min.js` in `build/cordova` folder.
 
 ## Examples
 See examples directory. Note that both peers should _not_ be located behind the same NAT device. To test this lib, deploy one peer on your home network and another one outside of that network -- for instance on a public cloud infrastructure.
