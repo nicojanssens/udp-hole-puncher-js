@@ -4,7 +4,8 @@ machine:
 test:
   override:
     - npm run test-node
-    - npm run build
+    - npm run build-chromium-prod
+    - npm run build-cordova-prod
 deployment:
     npm:
       branch: master
