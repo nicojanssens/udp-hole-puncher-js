@@ -16,6 +16,20 @@ JS library implementing a UDP hole punching protocol to connect two peers locate
 npm install udp-hole-puncher
 ```
 
+## Build
+
+### Chrome app
+```
+gulp chromiumify [--production]
+```
+Generates `udp-hole-puncher.debug.js` and `udp-hole-puncher.min.js` in `build/chromium` folder.
+
+### Cordova app
+```
+gulp cordovaify [--production]
+```
+Generates `udp-hole-puncher.debug.js` and `udp-hole-puncher.min.js` in `build/cordova` folder.
+
 ## Usage
 ```js
 var dgram = require('dgram')
