@@ -2,7 +2,7 @@
 <widget id="io.microminion.udp-hole-puncher-test" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>UdpHolePuncher CordovaTest</name>
     <description>
-        Very basic test to check if UdpHolePuncher loads properly in Cordova app
+        Very basic test to verify whether or not UdpHolePuncher loads properly in Cordova app
     </description>
     <author email="nico.b.janssens@gmail.com">
         Nico Janssens
