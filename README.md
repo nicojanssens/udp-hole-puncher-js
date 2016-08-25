@@ -99,6 +99,11 @@ gulp cordovaify [--production]
 ```
 Generates `udp-hole-puncher.debug.js` and `udp-hole-puncher.min.js` in `build/cordova` folder.
 
+Use `cordova-plugin-chrome-apps-sockets-udp`:
+```
+cordova plugin add https://github.com/MobileChromeApps/cordova-plugin-chrome-apps-sockets-udp
+```
+
 ## Examples
 See examples directory. Note that both peers should _not_ be located behind the same NAT device. To test this lib, deploy one peer on your home network and another one outside of that network -- for instance on a public cloud infrastructure.
 
