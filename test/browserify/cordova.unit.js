@@ -1,6 +1,5 @@
 'use strict'
 
-var chrome = require('./chrome')
 var dgram = require('dgram')
 var gulp = require('gulp')
 var gulpfile = require('../../gulpfile')
@@ -12,8 +11,8 @@ var modules  = {
 }
 
 describe('udp hole puncher', function () {
-  this.timeout(10000)
-  it('should properly return/release an existing UDP socket using chrome-dgrams ', function (done) {
+  this.timeout(100000)
+  it('should properly return/release an existing UDP socket using dgrams ', function (done) {
     var child
     // create udp server listening to messages from chrome app
     var server = dgram.createSocket('udp4')
@@ -45,15 +44,15 @@ describe('udp hole puncher', function () {
     // build bundle.js
     gulp.task('test', function () {
       var destFile = 'bundle.js'
-      var destFolder = './chrome-app'
+      var destFolder = './cordova-app/www/js'
       var entry = './test.js'
       return gulpfile
         .bundle(entry, modules, destFile, destFolder, true)
         .on('end', onBundleReady)
     })
     var onBundleReady = function () {
-      console.log('clean browserify build, launching chrome app')
-      child = chrome.launchApp()
+      console.log('clean browserify build, please launch cordova app')
+      //child = chrome.launchApp()
     }
   })
 })

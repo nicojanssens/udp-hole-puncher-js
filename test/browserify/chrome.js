@@ -26,23 +26,6 @@ switch (os.platform()) {
     break
 }
 
-// var BUNDLE_PATH = path.join(__dirname, 'chrome-app/bundle.js')
-
-// exports.browserify = function (filename, env, cb) {
-//   if (!env) env = {}
-//   if (!cb) cb = function () {}
-//   cb = once(cb)
-//
-//   var b = browserify()
-//   b.add(path.join(__dirname, filename))
-//   b.transform(envify(env))
-//
-//   b.bundle()
-//     .pipe(fs.createWriteStream(BUNDLE_PATH))
-//     .on('close', cb)
-//     .on('error', cb)
-// }
-
 exports.launchApp = function () {
   // supply full path because windows
   var app = path.join(__dirname, '/chrome-app')
