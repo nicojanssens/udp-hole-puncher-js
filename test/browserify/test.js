@@ -5,7 +5,6 @@ var dgram = require('dgram') // browserify will replace this with chrome-dgram
 var expect = chai.expect
 var UdpHolePuncher = require('../../index')
 
-console.log(dgram)
 var port = 12345
 
 // execute test
@@ -25,7 +24,6 @@ var runTest = function () {
   }
 
   // create socket
-  console.log(dgram)
   var socket = dgram.createSocket('udp4')
   socket.on('message', onMessage)
   socket.on('error', onError)
