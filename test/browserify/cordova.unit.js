@@ -1,8 +1,10 @@
 'use strict'
 
+var cp = require('child_process')
 var dgram = require('dgram')
 var gulp = require('gulp')
 var gulpfile = require('../../gulpfile')
+var path = require('path')
 var listeningPort = 12345
 
 var modules  = {
@@ -51,8 +53,14 @@ describe('udp hole puncher', function () {
         .on('end', onBundleReady)
     })
     var onBundleReady = function () {
-      console.log('clean browserify build, please launch cordova app')
-      //child = chrome.launchApp()
+      console.log('clean browserify build, launching cordova emulator -- please wait a few seconds')
+      var env = { cwd: path.join(__dirname, './cordova-app') }
+      console.log(env)
+      child = cp.exec(path.join(__dirname, './cordova-app', 'start.sh'), env, function (err, stdout, stderr) {
+        if (err) {
+          done(err)
+        }
+      })
     }
   })
 })
