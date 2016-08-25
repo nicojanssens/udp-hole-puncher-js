@@ -1,6 +1,7 @@
 'use strict'
 
 var argv = require('yargs').argv
+var babelify = require('babelify')
 var browserify = require('browserify')
 var buffer = require('vinyl-buffer')
 var gulp = require('gulp')
@@ -11,11 +12,8 @@ var source = require('vinyl-source-stream')
 var uglify = require('gulp-uglify')
 
 var modules = {}
-modules.chromiumify = {
+modules = {
   'dgram': 'chrome-dgram',
-  'winston': './lib/logger'
-}
-modules.cordovaify = {
   'winston': './lib/logger'
 }
 
@@ -23,14 +21,14 @@ gulp.task('chromiumify', function () {
   var destFile = argv.production? 'udp-hole-puncher.min.js': 'udp-hole-puncher.debug.js'
   var destFolder = path.join(__dirname, 'build/chromium')
   var entry = path.join(__dirname, 'index.js')
-  return bundle(entry, modules.chromiumify, destFile, destFolder, argv.production)
+  return bundle(entry, modules, destFile, destFolder, argv.production)
 })
 
 gulp.task('cordovaify', function () {
   var destFile = argv.production? 'udp-hole-puncher.min.js': 'udp-hole-puncher.debug.js'
   var destFolder = path.join(__dirname, 'build/cordova')
   var entry = path.join(__dirname, 'index.js')
-  return bundle(entry, modules.cordovaify, destFile, destFolder, argv.production)
+  return bundle(entry, modules, destFile, destFolder, argv.production)
 })
 
 function bundle(entry, replacements, destFile, destFolder, production) {
@@ -42,10 +40,16 @@ function bundle(entry, replacements, destFile, destFolder, production) {
   var bundler = browserify(options)
   for (var originalModule in replacements) {
     var replacementModule = replacements[originalModule]
-    bundler = bundler.require(originalModule, {
-       expose: replacementModule
+    bundler = bundler.require(replacementModule, {
+       expose: originalModule
     })
   }
+  // bundler.transform(
+  //   babelify, {
+  //     global: true,
+  //     presets: ['es2015']
+  //   }
+  // )
   return bundler.bundle()
     .on('error', function (err) {
       console.log(err.toString());
@@ -59,4 +63,3 @@ function bundle(entry, replacements, destFile, destFolder, production) {
 }
 
 module.exports.bundle = bundle
-module.exports.modules = modules
