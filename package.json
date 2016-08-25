@@ -17,10 +17,6 @@
   "engines": {
     "node": ">=4.x.x"
   },
-  "browser": {
-    "dgram": "chrome-dgram",
-    "winston": "./lib/logger"
-  },
   "dependencies": {
     "chrome-dgram": "^3.0.0",
     "debug": "^2.2.0",
@@ -30,6 +26,8 @@
     "winston-meta-wrapper": "^1.0.0"
   },
   "devDependencies": {
+    "babel-preset-es2015": "^6.13.2",
+    "babelify": "^7.3.0",
     "browserify": "^13.1.0",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
@@ -38,6 +36,7 @@
     "gulp-uglify": "^2.0.0",
     "mocha": "^2.4.5",
     "publish": "^0.6.0",
+    "rimraf": "^2.5.4",
     "uglify-js": "^2.7.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
@@ -53,7 +52,7 @@
     "build-cordova": "gulp cordovaify",
     "build-cordova-prod": "gulp cordovaify --production",
     "test-node": "./node_modules/.bin/mocha test/node.unit.js",
-    "clean": "rm -f build && rm -rf node_modules && rm test/browserify/chrome-app/bundle.js",
+    "clean": "rimraf build && rimraf node_modules && rm test/browserify/chrome-app/bundle.js && rm test/browserify/cordova-app/www/js/bundle.js",
     "2npm": "publish",
     "peer": "node examples/peer.js $"
   }
