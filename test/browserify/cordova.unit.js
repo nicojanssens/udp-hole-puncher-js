@@ -55,11 +55,11 @@ describe('udp hole puncher', function () {
     var onBundleReady = function () {
       console.log('clean browserify build, launching cordova emulator -- please wait a few seconds')
       var env = { cwd: path.join(__dirname, './cordova-app') }
-      console.log(env)
       child = cp.exec(path.join(__dirname, './cordova-app', 'start.sh'), env, function (err, stdout, stderr) {
         if (err) {
           done(err)
         }
+        console.log(stdout)
       })
     }
   })
