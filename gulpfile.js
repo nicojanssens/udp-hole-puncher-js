@@ -1,7 +1,6 @@
 'use strict'
 
 var argv = require('yargs').argv
-var babelify = require('babelify')
 var browserify = require('browserify')
 var buffer = require('vinyl-buffer')
 var gulp = require('gulp')
@@ -17,19 +16,14 @@ modules = {
   'winston': './lib/logger'
 }
 
-gulp.task('chromiumify', function () {
-  var destFile = argv.production? 'udp-hole-puncher.min.js': 'udp-hole-puncher.debug.js'
-  var destFolder = path.join(__dirname, 'build/chromium')
-  var entry = path.join(__dirname, 'index.js')
-  return bundle(entry, modules, destFile, destFolder, argv.production)
-})
+gulp.task('browserify', browserifyTask)
 
-gulp.task('cordovaify', function () {
+function browserifyTask() {
   var destFile = argv.production? 'udp-hole-puncher.min.js': 'udp-hole-puncher.debug.js'
-  var destFolder = path.join(__dirname, 'build/cordova')
+  var destFolder = path.join(__dirname, 'build')
   var entry = path.join(__dirname, 'index.js')
   return bundle(entry, modules, destFile, destFolder, argv.production)
-})
+}
 
 function bundle(entry, replacements, destFile, destFolder, production) {
   var options = {
@@ -44,12 +38,6 @@ function bundle(entry, replacements, destFile, destFolder, production) {
        expose: originalModule
     })
   }
-  // bundler.transform(
-  //   babelify, {
-  //     global: true,
-  //     presets: ['es2015']
-  //   }
-  // )
   return bundler.bundle()
     .on('error', function (err) {
       console.log(err.toString());

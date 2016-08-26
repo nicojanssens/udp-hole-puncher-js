@@ -4,8 +4,8 @@ machine:
 test:
   override:
     - npm run test-node
-    - npm run build-chromium-prod
-    - npm run build-cordova-prod
+    - npm run browserify
+    - npm run browserify-prod
 deployment:
     npm:
       branch: master

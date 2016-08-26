@@ -26,8 +26,6 @@
     "winston-meta-wrapper": "^1.0.0"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.13.2",
-    "babelify": "^7.3.0",
     "browserify": "^13.1.0",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
@@ -47,10 +45,8 @@
     "url": "git://github.com/microminion/udp-hole-puncher-js.git"
   },
   "scripts": {
-    "build-chromium": "gulp chromiumify",
-    "build-chromium-prod": "gulp chromiumify --production",
-    "build-cordova": "gulp cordovaify",
-    "build-cordova-prod": "gulp cordovaify --production",
+    "browserify": "gulp browserify",
+    "browserify-prod": "gulp browserify --production",
     "test-node": "./node_modules/.bin/mocha test/node.unit.js",
     "clean": "rimraf build && rimraf node_modules && rm test/browserify/chrome-app/bundle.js && rm test/browserify/cordova-app/www/js/bundle.js",
     "2npm": "publish",
