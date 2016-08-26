@@ -9,7 +9,7 @@ JS library implementing a UDP hole punching protocol to connect two peers locate
 ## Features
 - no rendez-vous server lock in
 - verifies if bidirectional communication is possible
-- can be browserified (to be used in chrome apps)
+- can be browserified (to be used in chrome and cordova apps)
 
 ## Install
 ```
