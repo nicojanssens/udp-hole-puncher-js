@@ -90,7 +90,7 @@ Fired when a fatal error occurs.
 ```
 gulp browserify [--production]
 ```
-Puts `udp-hole-puncher.debug.js` and `udp-hole-puncher.min.js` in `build` folder. Can be used in chrome and cordova app. When integrating in a cordova app, use `cordova-plugin-chrome-apps-sockets-udp`:
+Puts `udp-hole-puncher.debug.js` and `udp-hole-puncher.min.js` in `build` folder. Can be used in chrome and cordova app. When integrating udp-hole-puncher in a cordova app, use `cordova-plugin-chrome-apps-sockets-udp`:
 ```
 cordova plugin add https://github.com/MobileChromeApps/cordova-plugin-chrome-apps-sockets-udp
 ```
