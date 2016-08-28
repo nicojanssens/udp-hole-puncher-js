@@ -44,9 +44,9 @@ function bundle(entry, replacements, destFile, destFolder, production) {
       this.emit('end');
     })
     .pipe(source(destFile))
-    .pipe(gulpif(argv.production, buffer()))
-    .pipe(gulpif(argv.production, uglify()))
-    .pipe(gulpif(argv.production, size()))
+    .pipe(gulpif(production, buffer()))
+    .pipe(gulpif(production, uglify()))
+    .pipe(gulpif(production, size()))
     .pipe(gulp.dest(destFolder))
 }
 
