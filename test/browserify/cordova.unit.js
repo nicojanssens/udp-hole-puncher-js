@@ -49,7 +49,7 @@ describe('udp hole puncher', function () {
       var destFolder = './cordova-app/www/js'
       var entry = './test.js'
       return gulpfile
-        .bundle(entry, modules, destFile, destFolder, true)
+        .bundle(entry, modules, destFile, destFolder, false)
         .on('end', onBundleReady)
     })
     var onBundleReady = function () {
