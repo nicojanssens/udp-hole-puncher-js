@@ -1,6 +1,6 @@
 {
   "name": "udp-hole-puncher",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "UDP hole punching library",
   "main": "index.js",
   "keywords": [
@@ -35,7 +35,7 @@
     "mocha": "^2.4.5",
     "publish": "^0.6.0",
     "uglify-js": "^2.7.0",
-    "varify":"^0.1.1",
+    "varify": "^0.1.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "yargs": "^3.32.0"
