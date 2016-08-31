@@ -59,7 +59,7 @@ describe('udp hole puncher', function () {
         if (err) {
           done(err)
         }
-        console.log(stdout)
+        //console.log(stdout)
       })
     }
   })
