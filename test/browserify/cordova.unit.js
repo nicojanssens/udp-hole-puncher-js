@@ -9,7 +9,7 @@ var listeningPort = 12345
 
 var modules  = {
   'dgram': 'chrome-dgram',
-  'winston': '../../lib/logger'
+  'winston': 'winston-browser'
 }
 
 describe('udp hole puncher', function () {

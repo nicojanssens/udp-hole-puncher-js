@@ -14,7 +14,7 @@ var varify = require('varify')
 var modules = {}
 modules = {
   'dgram': 'chrome-dgram',
-  'winston': './lib/logger'
+  'winston': 'winston-browser'
 }
 
 gulp.task('browserify', browserifyTask)
