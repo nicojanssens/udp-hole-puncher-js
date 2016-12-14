@@ -15,7 +15,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=4.x.x"
+    "node": ">=6.9.0"
   },
   "dependencies": {
     "chrome-dgram": "^3.0.0",
