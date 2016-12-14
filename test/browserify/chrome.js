@@ -8,20 +8,20 @@ var CHROME = process.env.CHROME
 
 // locate default chromes for os
 switch (os.platform()) {
-  case 'win32' :
+  case 'win32':
     if (process.arch === 'x64') {
       CHROME = '"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"'
     } else {
       CHROME = '"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"'
     }
     break
-  case 'darwin' :
+  case 'darwin':
     CHROME = '/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome'
     break
-  case 'linux' :
+  case 'linux':
     CHROME = '/opt/google/chrome/chrome'
     break
-  default :
+  default:
     console.log('Defaulting to process.env.CHROME `%s`', process.env.CHROME)
     break
 }

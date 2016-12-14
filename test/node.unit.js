@@ -45,5 +45,4 @@ describe('udp hole puncher', function () {
     })
     socket.bind(32547)
   })
-
 })

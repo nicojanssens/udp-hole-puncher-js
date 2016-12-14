@@ -9,8 +9,8 @@ var port = 12345
 
 // execute test
 var runTest = function () {
-  function done(error) {
-    var message = (error === undefined)? 'done': error
+  function done (error) {
+    var message = (error === undefined) ? 'done' : error
     socket.send(message, 0, message.length, port, '127.0.0.1')
   }
 

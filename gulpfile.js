@@ -19,14 +19,14 @@ modules = {
 
 gulp.task('browserify', browserifyTask)
 
-function browserifyTask() {
-  var destFile = argv.production? 'udp-hole-puncher.min.js': 'udp-hole-puncher.debug.js'
+function browserifyTask () {
+  var destFile = argv.production ? 'udp-hole-puncher.min.js' : 'udp-hole-puncher.debug.js'
   var destFolder = path.join(__dirname, 'build')
   var entry = path.join(__dirname, 'index.js')
   return bundle(entry, modules, destFile, destFolder, argv.production)
 }
 
-function bundle(entry, replacements, destFile, destFolder, production) {
+function bundle (entry, replacements, destFile, destFolder, production) {
   // set browserify options
   var options = {
     entries: entry,
@@ -39,7 +39,7 @@ function bundle(entry, replacements, destFile, destFolder, production) {
   for (var originalModule in replacements) {
     var replacementModule = replacements[originalModule]
     bundler = bundler.require(replacementModule, {
-       expose: originalModule
+      expose: originalModule
     })
   }
   // babelify transformation
@@ -51,8 +51,8 @@ function bundle(entry, replacements, destFile, destFolder, production) {
   // bundle
   return bundler.bundle()
     .on('error', function (err) {
-      console.log(err.toString());
-      this.emit('end');
+      console.log(err.toString())
+      this.emit('end')
     })
     .pipe(source(destFile))
     .pipe(gulpif(production, buffer()))
