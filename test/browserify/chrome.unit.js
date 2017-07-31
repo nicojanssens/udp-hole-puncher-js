@@ -6,7 +6,7 @@ var gulp = require('gulp')
 var gulpfile = require('../../gulpfile')
 var listeningPort = 12345
 
-var modules  = {
+var modules = {
   'dgram': 'chrome-dgram',
   'winston': 'winston-browser'
 }
@@ -17,7 +17,7 @@ describe('udp hole puncher', function () {
     var child
     // create udp server listening to messages from chrome app
     var server = dgram.createSocket('udp4')
-    server.on('error',  function (error) {
+    server.on('error', function (error) {
       console.error(error)
       server.close()
       if (child) {

@@ -1,6 +1,10 @@
 {
   "name": "udp-hole-puncher",
+<<<<<<< HEAD
   "version": "1.0.0",
+=======
+  "version": "0.3.10",
+>>>>>>> edb82f3aa2cdd341598746191850c61bea532515
   "description": "UDP hole punching library",
   "main": "index.js",
   "keywords": [
@@ -15,20 +19,20 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=4.x.x"
+    "node": ">=6.9.0"
   },
   "dependencies": {
     "chrome-dgram": "^3.0.0",
     "hat": "0.0.3",
     "merge": "^1.2.0",
-    "winston": "^2.2.0",
+    "winston": "^2.3.0",
     "winston-browser": "^1.0.0",
     "winston-meta-wrapper": "^1.0.0"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.13.2",
     "babelify": "^7.3.0",
-    "browserify": "^13.1.0",
+    "browserify": "^13.1.1",
     "chai": "^3.5.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
@@ -37,16 +41,16 @@
     "eslint-plugin-jsx-a11y": "^5.0.1",
     "eslint-plugin-react": "^7.0.1",
     "gulp": "^3.9.1",
-    "gulp-if": "^2.0.1",
+    "gulp-if": "^2.0.2",
     "gulp-size": "^2.1.0",
     "gulp-uglify": "^2.0.0",
-    "mocha": "^2.4.5",
+    "mocha": "^3.2.0",
     "publish": "^0.6.0",
-    "uglify-js": "^2.7.0",
+    "uglify-js": "^2.7.5",
     "varify": "^0.1.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "yargs": "^3.32.0"
+    "yargs": "^6.5.0"
   },
   "repository": {
     "type": "git",
