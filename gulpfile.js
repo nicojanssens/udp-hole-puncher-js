@@ -16,18 +16,7 @@ modules = {
   winston: 'winston-browser',
 };
 
-<<<<<<< HEAD
 const bundle = (entry, replacements, destFile, destFolder, production) => {
-=======
-function browserifyTask () {
-  var destFile = argv.production ? 'udp-hole-puncher.min.js' : 'udp-hole-puncher.debug.js'
-  var destFolder = path.join(__dirname, 'build')
-  var entry = path.join(__dirname, 'index.js')
-  return bundle(entry, modules, destFile, destFolder, argv.production)
-}
-
-function bundle (entry, replacements, destFile, destFolder, production) {
->>>>>>> edb82f3aa2cdd341598746191850c61bea532515
   // set browserify options
   const options = {
     entries: entry,
