@@ -1,10 +1,8 @@
-'use strict'
+const dgram = require('dgram');
+const UdpHolePuncher = require('../index');
 
-var dgram = require('dgram')
-var UdpHolePuncher = require('../index')
-
-// args
-var argv = require('yargs')
+// eslint-disable-next-line import/no-extraneous-dependencies
+const argv = require('yargs')
   .usage('Usage: $0 [params]')
   .demand('b')
   .alias('b', 'bind')
@@ -25,43 +23,44 @@ var argv = require('yargs')
   // help
   .help('h')
   .alias('h', 'help')
-  .argv
+  .argv;
 
-var dataMessages = 10
+const dataMessages = 10;
 
-// socket configuratio
-var socket = dgram.createSocket('udp4')
-socket.on('error', function (error) {
-  console.error('socket error:\n' + error.stack)
-  socket.close()
-})
-socket.on('message', function (message, rinfo) {
-  var data = message.toString()
-  console.log('receiving ' + data + ' from ' + rinfo.address + ':' + rinfo.port)
-})
-socket.on('listening', function () {
-  var address = socket.address()
-  console.log('listening at ' + address.address + ':' + address.port)
+// create new socket
+const socket = dgram.createSocket('udp4');
+// send data
+const sendData = () => {
+  for (let i = 0; i < dataMessages; i += 1) {
+    const data = `message ${i}`;
+    console.log(`sending ${data} to ${argv.addr}:${argv.port}`);
+    const message = new Buffer(data);
+    socket.send(message, 0, message.length, argv.port, argv.addr);
+  }
+};
+// socket configuration
+socket.on('error', (error) => {
+  console.error(`socket error:\n${error.stack}`);
+  socket.close();
+});
+socket.on('message', (message, rinfo) => {
+  const data = message.toString();
+  console.log(`receiving ${data} from ${rinfo.address}:${rinfo.port}`);
+});
+socket.on('listening', () => {
+  const address = socket.address();
+  console.log(`listening at ${address.address}:${address.port}`);
   // puncher configuration
-  var puncher = new UdpHolePuncher(socket)
-  puncher.on('connected', function () {
-    console.log('woohoo, we can talk to ' + argv.addr + ':' + argv.port)
-    sendData()
-  })
-  puncher.on('error', function (error) {
-    console.log('woops, something went wrong: ' + error)
-  })
-  puncher.connect(argv.addr, argv.port)
-})
+  const puncher = new UdpHolePuncher(socket);
+  puncher.on('connected', () => {
+    console.log(`woohoo, we can talk to ${argv.addr}:${argv.port}`);
+    sendData();
+  });
+  puncher.on('error', (error) => {
+    console.log(`woops, something went wrong: ${error}`);
+  });
+  puncher.connect(argv.addr, argv.port);
+});
 
 // bind socket
-socket.bind(argv.bind)
-
-function sendData () {
-  for (var i = 0; i < dataMessages; i++) {
-    var data = 'message ' + i
-    console.log('sending ' + data + ' to ' + argv.addr + ':' + argv.port)
-    var message = new Buffer(data)
-    socket.send(message, 0, message.length, argv.port, argv.addr)
-  }
-}
+socket.bind(argv.bind);
