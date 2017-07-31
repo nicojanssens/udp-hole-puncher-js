@@ -18,39 +18,39 @@ npm install udp-hole-puncher
 
 ## Usage
 ```js
-var dgram = require('dgram')
-var UdpHolePuncher = require('udp-hole-puncher')
+const dgram = require('dgram');
+const UdpHolePuncher = require('udp-hole-puncher');
 
 // peer's public port and address
-var peer = {
+const peer = {
   port: 1234,
-  addr: '1.2.3.4'
-}
+  addr: '1.2.3.4',
+};
 // local port
-var myPort: 5678
+const myPort = 5678;
 
 // socket config
-var socket = dgram.createSocket('udp4')
-socket.on('error', function (error) {...} )
-socket.on('message', function (message, rinfo) {...} )
-socket.on('listening', function () {
+const socket = dgram.createSocket('udp4');
+socket.on('error', (error) => {...} );
+socket.on('message', (message, rinfo) => {...} );
+socket.on('listening', () => {
   // puncher config
-  var puncher = new UdpHolePuncher(socket)
+  const puncher = new UdpHolePuncher(socket);
   // when connection is established, send dummy message
-  puncher.on('connected', function () {
-    var message = new Buffer('hello')
-    socket.send(message, 0, message.length, peer.port, peer.addr)
-  })
+  puncher.on('connected', () => {
+    const message = new Buffer('hello');
+    socket.send(message, 0, message.length, peer.port, peer.addr);
+  });
   // error handling code
-  puncher.on('error', function (error) {
+  puncher.on('error', (error) => {
     ...
-  })
+  });
   // connect to peer (using its public address and port)
-  puncher.connect(peer.addr, peer.port)
-})
+  puncher.connect(peer.addr, peer.port);
+});
 
 // bind socket
-socket.bind(myPort)
+socket.bind(myPort);
 ```
 
 ## API
@@ -73,16 +73,16 @@ End execution of the hole punching protocol.
 
 ## Events
 
-### `puncher.on('connected', function() {})`
+### `puncher.on('connected', () => {})`
 Fired when the hole punching protocol completes and both peers can reach each other.  
 
-### `puncher.on('reachable', function() {})`
+### `puncher.on('reachable', () => {})`
 Called when the other peer was able to reach this peer. No guarantee yet that bidirectional communication can be established.
 
-### `puncher.on('timeout', function() {})`
+### `puncher.on('timeout', () => {})`
 Fired when the hole punching protocol timeouts.  
 
-### `puncher.on('error', function(error) {})`
+### `puncher.on('error', (error) => {})`
 Fired when a fatal error occurs.    
 
 ## Chrome and cordova apps
