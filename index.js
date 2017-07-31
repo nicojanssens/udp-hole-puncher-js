@@ -1,5 +1,3 @@
-'use strict'
+const puncher = require('./lib/puncher');
 
-var puncher = require('./lib/puncher')
-
-module.exports = puncher
+module.exports = puncher;
