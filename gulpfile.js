@@ -1,56 +1,57 @@
-'use strict'
+const argv = require('yargs').argv;
+const babelify = require('babelify');
+const browserify = require('browserify');
+const buffer = require('vinyl-buffer');
+const gulp = require('gulp');
+const gulpif = require('gulp-if');
+const path = require('path');
+const size = require('gulp-size');
+const source = require('vinyl-source-stream');
+const uglify = require('gulp-uglify');
+const varify = require('varify');
 
-var argv = require('yargs').argv
-var browserify = require('browserify')
-var buffer = require('vinyl-buffer')
-var gulp = require('gulp')
-var gulpif = require('gulp-if')
-var path = require('path')
-var size = require('gulp-size')
-var source = require('vinyl-source-stream')
-var uglify = require('gulp-uglify')
-var varify = require('varify')
-
-var modules = {}
+let modules = {};
 modules = {
-  'dgram': 'chrome-dgram',
-  'winston': 'winston-browser'
-}
+  dgram: 'chrome-dgram',
+  winston: 'winston-browser',
+};
 
-gulp.task('browserify', browserifyTask)
-
-function browserifyTask() {
-  var destFile = argv.production? 'udp-hole-puncher.min.js': 'udp-hole-puncher.debug.js'
-  var destFolder = path.join(__dirname, 'build')
-  var entry = path.join(__dirname, 'index.js')
-  return bundle(entry, modules, destFile, destFolder, argv.production)
-}
-
-function bundle(entry, replacements, destFile, destFolder, production) {
+const bundle = (entry, replacements, destFile, destFolder, production) => {
   // set browserify options
-  var options = {
+  const options = {
     entries: entry,
     extensions: ['.js'],
-    debug: production ? false : true
-  }
+    debug: !production,
+  };
   // create bundler
-  var bundler = browserify(options)
+  let bundler = browserify(options);
   // replace libs
-  for (var originalModule in replacements) {
-    var replacementModule = replacements[originalModule]
-    bundler = bundler.require(replacementModule, {
-       expose: originalModule
-    })
-  }
+  Object.keys(replacements).forEach((originalModule) => {
+    bundler = bundler.require(
+      replacements[originalModule],
+      {
+        expose: originalModule,
+      } // eslint-disable-line comma-dangle
+    );
+  });
   // babelify transformation
   bundler.transform(
-    varify, {
-      global: true
-    }
-  )
+    babelify,
+    {
+      global: true,
+      presets: ['es2015'],
+    } // eslint-disable-line comma-dangle
+  );
+  // babelify transformation
+  bundler.transform(
+    varify,
+    {
+      global: true,
+    } // eslint-disable-line comma-dangle
+  );
   // bundle
   return bundler.bundle()
-    .on('error', function (err) {
+    .on('error', (err) => {
       console.log(err.toString());
       this.emit('end');
     })
@@ -58,7 +59,16 @@ function bundle(entry, replacements, destFile, destFolder, production) {
     .pipe(gulpif(production, buffer()))
     .pipe(gulpif(production, uglify()))
     .pipe(gulpif(production, size()))
-    .pipe(gulp.dest(destFolder))
-}
+    .pipe(gulp.dest(destFolder));
+};
 
-module.exports.bundle = bundle
+const browserifyTask = () => {
+  const destFile = argv.production ? 'udp-hole-puncher.min.js' : 'udp-hole-puncher.debug.js';
+  const destFolder = path.join(__dirname, 'build');
+  const entry = path.join(__dirname, 'index.js');
+  return bundle(entry, modules, destFile, destFolder, argv.production);
+};
+
+gulp.task('browserify', browserifyTask);
+
+module.exports.bundle = bundle;
