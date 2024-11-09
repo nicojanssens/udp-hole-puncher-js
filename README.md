@@ -38,7 +38,7 @@ socket.on('listening', () => {
   const puncher = new UdpHolePuncher(socket);
   // when connection is established, send dummy message
   puncher.on('connected', () => {
-    const message = new Buffer('hello');
+    const message = Buffer.from('hello');
     socket.send(message, 0, message.length, peer.port, peer.addr);
   });
   // error handling code

@@ -34,7 +34,7 @@ const sendData = () => {
   for (let i = 0; i < dataMessages; i += 1) {
     const data = `message ${i}`;
     console.log(`sending ${data} to ${argv.addr}:${argv.port}`);
-    const message = new Buffer(data);
+    const message = Buffer.from(data);
     socket.send(message, 0, message.length, argv.port, argv.addr);
   }
 };
